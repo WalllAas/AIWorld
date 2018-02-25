@@ -1,6 +1,10 @@
-package launch;
+package model.entity.ai;
 
 import java.util.Random;
+
+import model.entity.Entity;
+import model.refs.Dir;
+import model.world.Tile;
 
 public class EntityAI implements Runnable{
 	

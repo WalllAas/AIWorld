@@ -1,6 +1,11 @@
-package launch;
+package model.entity;
 
 import java.util.List;
+
+import model.entity.ai.EntityAI;
+import model.refs.Dir;
+import model.world.Map;
+import model.world.Tile;
 
 public class Entity {
 	

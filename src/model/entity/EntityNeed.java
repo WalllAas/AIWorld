@@ -1,4 +1,6 @@
-package launch;
+package model.entity;
+
+import model.item.Item;
 
 public class EntityNeed {
 	

@@ -1,8 +1,11 @@
-package launch;
+package model.world;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import model.entity.Entity;
+import model.refs.Dir;
 
 public class Map {
 	public static final int WIDTH = 50;

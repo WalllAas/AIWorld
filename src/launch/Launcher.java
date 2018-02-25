@@ -1,6 +1,10 @@
 package launch;
 
-public class Test {
+import model.entity.Entity;
+import model.item.Item;
+import model.world.Map;
+
+public class Launcher {
 	
 	public static final Item WOOD = new Item("wood");
 	

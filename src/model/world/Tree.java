@@ -1,11 +1,14 @@
-package launch;
+package model.world;
+
+import launch.Launcher;
+import model.item.Item;
 
 public class Tree {
 	
 	private Item drop;
 	
 	public Tree() {
-		this.drop = Test.WOOD;
+		this.drop = Launcher.WOOD;
 	}
 	
 	
