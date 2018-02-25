@@ -27,5 +27,13 @@ public class Tile {
 	public boolean containsTree(){
 		return this.tree != null;
 	}
+	
+	public void breakTree() {
+		this.tree = null;
+	}
+	
+	public Tree getTree() {
+		return this.tree;
+	}
 
 }

@@ -21,13 +21,12 @@ public class Map {
 			for(int x = 0; x < WIDTH; x++){
 				Tile tile = new Tile(x, y);
 				
-				int i = r.nextInt(2);
+				int i = r.nextInt(15);
 				if(i == 1){
 					tile.addElement(new Tree());
 				}
 				
 				tilesList.add(tile);
-//				System.out.println("(" + x + ":" + y + ")");
 			}
 			tiles.add(tilesList);
 		}
@@ -83,17 +82,39 @@ public class Map {
 		List<Tile> resultTiles = new ArrayList<>();
 		if(dir != null){
 			Tile front = null;
-			switch(dir){
-			case NORTH:
-			case SOUTH:
+			switch(dir.getAxis()){
+			case "Y":
 				front = this.tiles.get(pos.getY()+dir.getDirValue()).get(pos.getX());
 				break;
-			case EAST:
-			case WEST:
+			case "X":
 				front = this.tiles.get(pos.getY()).get(pos.getX()+dir.getDirValue());
 				break;
 			}
 			resultTiles.add(front);
+			
+			Tile t1 = null;
+			Tile t2 = null;
+			Tile t3 = null;
+			for(int i = 1; i < length-1; i++) {
+				//FIXME try catch
+				switch(dir.getAxis()){
+				case "Y":
+					t1 = this.tiles.get(pos.getY()+(dir.getDirValue()*i)).get(pos.getX()+1);
+					t2 = this.tiles.get(pos.getY()+(dir.getDirValue()*i)).get(pos.getX()-1);
+					t3 = this.tiles.get(pos.getY()+(dir.getDirValue()*(i+1))).get(pos.getX());
+					break;
+				case "X":
+					t1 = this.tiles.get(pos.getY()+1).get(pos.getX()+(dir.getDirValue()*i));
+					t2 = this.tiles.get(pos.getY()-1).get(pos.getX()+(dir.getDirValue()*i));
+					t3 = this.tiles.get(pos.getY()).get(pos.getX()+(dir.getDirValue()*(i+1)));
+					break;
+				}
+				resultTiles.add(t1);
+				resultTiles.add(t2);
+				resultTiles.add(t3);
+			}
+			
+			
 			return resultTiles;
 		}
 		
