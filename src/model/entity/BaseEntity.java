@@ -36,7 +36,7 @@ public class BaseEntity extends Entity{
 		if(adjTile != null){
 			lastDirection = dir;
 			this.pos = adjTile;
-			System.out.println(String.format("Entity %s moving toward %s	|	Tree present? %s", this.id, dir, this.pos.containsTree()));
+			System.out.println(String.format("Entity %s moving toward %s", this.id, dir));
 		}
 		else{
 			System.out.println(String.format("Cannot move toward %s", dir));
@@ -57,6 +57,7 @@ public class BaseEntity extends Entity{
 	
 	@Override
 	public Tile scanArea(){
+		System.out.println("Scanning area !");
 		List<Tile> tilesInSight = this.map.getPolygonTilesFromPos(this.pos, lastDirection, this.sight);
 		Tile objTile = null;
 		

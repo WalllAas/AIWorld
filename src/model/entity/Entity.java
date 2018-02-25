@@ -44,7 +44,7 @@ public abstract class Entity {
 		this.id = id;
 		
 		this.pos = map.getRandomTile();
-		System.out.println(String.format("%s %s created", this.getClass(), this.id));
+		System.out.println(String.format("%s %s created", this.getClass().getSimpleName(), this.id));
 		
 	}
 	

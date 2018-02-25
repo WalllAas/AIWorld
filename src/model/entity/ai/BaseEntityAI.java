@@ -14,9 +14,11 @@ public class BaseEntityAI extends EntityAI{
 	@Override
 	public void run() {
 		Random r = new Random();
+		
 		while(!cancelled){
 			
 			if(objectiveTile !=null){
+				System.out.println("Objective targeted!");
 				while(this.entity.getPos() != objectiveTile){
 					this.entity.walkTo(objectiveTile);
 				}

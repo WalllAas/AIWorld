@@ -9,9 +9,9 @@ public class Launcher {
 	public static void main(String[] args) {		
 		Map map = new Map();
 		BaseEntity e = new BaseEntity(map, "1");
-		BaseEntity e2 = new BaseEntity(map, "2");
+//		BaseEntity e2 = new BaseEntity(map, "2");
 		e.startAI();
-		e2.startAI();
+//		e2.startAI();
 	}
 
 }

@@ -8,6 +8,8 @@ import model.entity.Entity;
 import model.refs.Dir;
 
 public class Map {
+	public static final int TREE_RARITY = 10;
+	
 	public static final int WIDTH = 50;
 	public static final int HEIGHT = 50;
 	
@@ -16,20 +18,24 @@ public class Map {
 	
 	public Map() {
 		Random r = new Random();
+		int trees = 0;
 		for(int y = 0; y < HEIGHT; y++){
-			List<Tile> tilesList = new ArrayList<>(); 
+			List<Tile> tilesList = new ArrayList<>();
+			
 			for(int x = 0; x < WIDTH; x++){
 				Tile tile = new Tile(x, y);
 				
-				int i = r.nextInt(15);
+				int i = r.nextInt(TREE_RARITY);
 				if(i == 1){
 					tile.addElement(new Tree());
+					trees++;
 				}
 				
 				tilesList.add(tile);
 			}
 			tiles.add(tilesList);
 		}
+		System.out.println(String.format("Number of trees : %s", trees));
 	}
 	
 	public void addEntities(Entity e){
@@ -78,16 +84,26 @@ public class Map {
 		return tiles.get(j).get(i);
 	}
 	
+	private Tile getTileFromCoords(int x, int y) {
+		Tile t = null;
+		try {
+			this.tiles.get(y).get(x);
+		}catch(IndexOutOfBoundsException e) {
+//			System.out.println(String.format("Tile at (%s,%s) is not in bounds, sorry!", x, y));
+		}
+		return t;
+	}
+	
 	public List<Tile> getPolygonTilesFromPos(Tile pos, Dir dir, int length){
 		List<Tile> resultTiles = new ArrayList<>();
 		if(dir != null){
 			Tile front = null;
 			switch(dir.getAxis()){
 			case "Y":
-				front = this.tiles.get(pos.getY()+dir.getDirValue()).get(pos.getX());
+				front = getTileFromCoords(pos.getY()+dir.getDirValue(), pos.getX());
 				break;
 			case "X":
-				front = this.tiles.get(pos.getY()).get(pos.getX()+dir.getDirValue());
+				front = getTileFromCoords(pos.getY(), pos.getX()+dir.getDirValue());
 				break;
 			}
 			resultTiles.add(front);
@@ -96,24 +112,24 @@ public class Map {
 			Tile t2 = null;
 			Tile t3 = null;
 			for(int i = 1; i < length-1; i++) {
-				//FIXME try catch
+				
 				switch(dir.getAxis()){
 				case "Y":
-					t1 = this.tiles.get(pos.getY()+(dir.getDirValue()*i)).get(pos.getX()+1);
-					t2 = this.tiles.get(pos.getY()+(dir.getDirValue()*i)).get(pos.getX()-1);
-					t3 = this.tiles.get(pos.getY()+(dir.getDirValue()*(i+1))).get(pos.getX());
+					t1 = getTileFromCoords(pos.getY()+(dir.getDirValue()*i), pos.getX()+1);
+					t2 = getTileFromCoords(pos.getY()+(dir.getDirValue()*i), pos.getX()-1);
+					t3 = getTileFromCoords(pos.getY()+(dir.getDirValue()*(i+1)), pos.getX());
 					break;
 				case "X":
-					t1 = this.tiles.get(pos.getY()+1).get(pos.getX()+(dir.getDirValue()*i));
-					t2 = this.tiles.get(pos.getY()-1).get(pos.getX()+(dir.getDirValue()*i));
-					t3 = this.tiles.get(pos.getY()).get(pos.getX()+(dir.getDirValue()*(i+1)));
+					t1 = getTileFromCoords(pos.getY()+1, pos.getX()+(dir.getDirValue()*i));
+					t2 = getTileFromCoords(pos.getY()-1, pos.getX()+(dir.getDirValue()*i));
+					t3 = getTileFromCoords(pos.getY(), pos.getX()+(dir.getDirValue()*(i+1)));
 					break;
 				}
 				resultTiles.add(t1);
 				resultTiles.add(t2);
 				resultTiles.add(t3);
 			}
-			
+			resultTiles.removeIf(t -> t == null);
 			
 			return resultTiles;
 		}
