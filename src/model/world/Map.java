@@ -6,9 +6,14 @@ import java.util.Random;
 
 import model.entity.Entity;
 import model.refs.Dir;
+import model.world.structure.Rock;
+import model.world.structure.Tree;
+import model.world.tile.Tile;
 
 public class Map {
+	// Bigger = more rare
 	public static final int TREE_RARITY = 10;
+	public static final int ROCK_RARITY = 20;
 	
 	public static final int WIDTH = 50;
 	public static final int HEIGHT = 50;
@@ -19,6 +24,7 @@ public class Map {
 	public Map() {
 		Random r = new Random();
 		int trees = 0;
+		int rocks = 0;
 		for(int y = 0; y < HEIGHT; y++){
 			List<Tile> tilesList = new ArrayList<>();
 			
@@ -26,9 +32,16 @@ public class Map {
 				Tile tile = new Tile(x, y);
 				
 				int i = r.nextInt(TREE_RARITY);
+				int j = r.nextInt(ROCK_RARITY);
 				if(i == 1){
 					tile.addElement(new Tree());
 					trees++;
+				}
+				if(j == 1) {
+					if(!tile.containsTree()) {
+						tile.addElement(new Rock());
+						rocks++;
+					}
 				}
 				
 				tilesList.add(tile);
@@ -36,6 +49,7 @@ public class Map {
 			tiles.add(tilesList);
 		}
 		System.out.println(String.format("Number of trees : %s", trees));
+		System.out.println(String.format("Number of rocks : %s", rocks));
 	}
 	
 	public void addEntities(Entity e){
@@ -87,7 +101,7 @@ public class Map {
 	private Tile getTileFromCoords(int x, int y) {
 		Tile t = null;
 		try {
-			this.tiles.get(y).get(x);
+			t = this.tiles.get(y).get(x);
 		}catch(IndexOutOfBoundsException e) {
 //			System.out.println(String.format("Tile at (%s,%s) is not in bounds, sorry!", x, y));
 		}
@@ -100,10 +114,10 @@ public class Map {
 			Tile front = null;
 			switch(dir.getAxis()){
 			case "Y":
-				front = getTileFromCoords(pos.getY()+dir.getDirValue(), pos.getX());
+				front = getTileFromCoords(pos.getX(), pos.getY()+dir.getDirValue());
 				break;
 			case "X":
-				front = getTileFromCoords(pos.getY(), pos.getX()+dir.getDirValue());
+				front = getTileFromCoords(pos.getX()+dir.getDirValue(), pos.getY());
 				break;
 			}
 			resultTiles.add(front);
@@ -115,14 +129,14 @@ public class Map {
 				
 				switch(dir.getAxis()){
 				case "Y":
-					t1 = getTileFromCoords(pos.getY()+(dir.getDirValue()*i), pos.getX()+1);
-					t2 = getTileFromCoords(pos.getY()+(dir.getDirValue()*i), pos.getX()-1);
-					t3 = getTileFromCoords(pos.getY()+(dir.getDirValue()*(i+1)), pos.getX());
+					t1 = getTileFromCoords(pos.getX()+1, pos.getY()+(dir.getDirValue()*i));
+					t2 = getTileFromCoords(pos.getX()-1, pos.getY()+(dir.getDirValue()*i));
+					t3 = getTileFromCoords(pos.getX(), pos.getY()+(dir.getDirValue()*(i+1)));
 					break;
 				case "X":
-					t1 = getTileFromCoords(pos.getY()+1, pos.getX()+(dir.getDirValue()*i));
-					t2 = getTileFromCoords(pos.getY()-1, pos.getX()+(dir.getDirValue()*i));
-					t3 = getTileFromCoords(pos.getY(), pos.getX()+(dir.getDirValue()*(i+1)));
+					t1 = getTileFromCoords(pos.getX()+(dir.getDirValue()*i), pos.getY()+1);
+					t2 = getTileFromCoords(pos.getX()+(dir.getDirValue()*i), pos.getY()-1);
+					t3 = getTileFromCoords(pos.getX()+(dir.getDirValue()*(i+1)), pos.getY());
 					break;
 				}
 				resultTiles.add(t1);
@@ -130,6 +144,10 @@ public class Map {
 				resultTiles.add(t3);
 			}
 			resultTiles.removeIf(t -> t == null);
+			
+			for(Tile t  : resultTiles) {
+				System.out.println(String.format("Scanned Tile (%s,%s)", t.getX(), t.getY()));
+			}
 			
 			return resultTiles;
 		}
@@ -139,6 +157,10 @@ public class Map {
 		}
 		
 		
+	}
+	
+	public List<List<Tile>> getTiles(){
+		return this.tiles;
 	}
 
 }

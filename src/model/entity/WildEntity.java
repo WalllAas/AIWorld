@@ -2,7 +2,7 @@ package model.entity;
 
 import model.refs.Dir;
 import model.world.Map;
-import model.world.Tile;
+import model.world.tile.Tile;
 
 public class WildEntity extends Entity{
 

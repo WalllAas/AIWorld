@@ -12,6 +12,12 @@ public class ItemStack {
 		this.amount = amount;
 	}
 	
+	public void addItems(ItemStack itemStack) {
+		if(item.equals(itemStack.getItem())) {
+			amount += itemStack.getAmount();
+		}
+	}
+	
 	public Item getItem() {
 		return this.item;
 	}
@@ -20,4 +26,9 @@ public class ItemStack {
 		return this.amount;
 	}
 
+	@Override
+	public String toString() {
+		
+		return String.format("%s - %s", this.item, this.amount);
+	}
 }

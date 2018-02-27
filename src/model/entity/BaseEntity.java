@@ -6,7 +6,7 @@ import model.entity.ai.BaseEntityAI;
 import model.entity.inventory.Inventory;
 import model.refs.Dir;
 import model.world.Map;
-import model.world.Tile;
+import model.world.tile.Tile;
 
 public class BaseEntity extends Entity{
 	
@@ -36,11 +36,11 @@ public class BaseEntity extends Entity{
 		if(adjTile != null){
 			lastDirection = dir;
 			this.pos = adjTile;
-			System.out.println(String.format("Entity %s moving toward %s", this.id, dir));
+			System.out.println(String.format("Entity %s moving toward %s | Pos %s", this.id, dir, this.pos));
 		}
 		else{
 			System.out.println(String.format("Cannot move toward %s", dir));
-		}	
+		}
 		
 	}
 	
@@ -65,7 +65,7 @@ public class BaseEntity extends Entity{
 			boolean done = false;
 			int count = 0;
 			while(!done && count < tilesInSight.size()){
-				if(tilesInSight.get(count).containsTree()){
+				if(tilesInSight.get(count).containsTree() || tilesInSight.get(count).containsRock()){
 					objTile = tilesInSight.get(count);
 					done = true;
 				}
@@ -80,10 +80,11 @@ public class BaseEntity extends Entity{
 	
 	@Override
 	public void harvest(){
-		if(this.pos.containsTree()) {
+		//TODO problem while harvesting new item (ex: you have wood in inventory and try to harvest stone)
+		if(this.pos.containsTree() || this.pos.containsRock()) {
 			
-			this.inventory.addItemAmount(this.pos.getTree().getDrop(), 1);
-			this.pos.breakTree();
+			this.inventory.addItemAmount(this.pos.getStructure().getDrop(), 1);
+			this.pos.breakStructure();
 		}
 		System.out.println(this.inventory);
 	}

@@ -3,7 +3,7 @@ package model.entity;
 import model.entity.ai.EntityAI;
 import model.refs.Dir;
 import model.world.Map;
-import model.world.Tile;
+import model.world.tile.Tile;
 
 public abstract class Entity {
 	/**
