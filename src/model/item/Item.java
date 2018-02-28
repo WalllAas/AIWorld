@@ -29,9 +29,19 @@ public class Item {
 		addCraftingMaterials(kItem, 1);
 	}
 	
+	public String getId() {
+		return this.id;
+	}
+	
 	@Override
 	public String toString() {
 		return this.name;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Item item = (Item) obj;
+		return this.id.equals(item.getId());
 	}
 
 }

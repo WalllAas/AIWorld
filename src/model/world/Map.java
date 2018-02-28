@@ -145,10 +145,6 @@ public class Map {
 			}
 			resultTiles.removeIf(t -> t == null);
 			
-			for(Tile t  : resultTiles) {
-				System.out.println(String.format("Scanned Tile (%s,%s)", t.getX(), t.getY()));
-			}
-			
 			return resultTiles;
 		}
 		

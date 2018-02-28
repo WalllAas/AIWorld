@@ -1,9 +1,12 @@
 package model.entity;
 
+import java.util.List;
+
 import model.entity.ai.EntityAI;
 import model.refs.Dir;
 import model.world.Map;
 import model.world.tile.Tile;
+import thread.AbstractLoop;
 
 public abstract class Entity {
 	/**
@@ -37,7 +40,7 @@ public abstract class Entity {
 	/**
 	 * The AI of the entity (Its behavior)
 	 */
-	protected EntityAI ai;
+	protected AbstractLoop ai;
 	
 	public Entity(Map map, String id) {
 		this.map = map;
@@ -68,7 +71,27 @@ public abstract class Entity {
 	 * Scan area to find an objective to go to
 	 * @return
 	 */
-	public abstract Tile scanArea();
+	public Tile scanArea(){
+		System.out.println("Scanning area !");
+		List<Tile> tilesInSight = this.map.getPolygonTilesFromPos(this.pos, lastDirection, this.sight);
+		Tile objTile = null;
+		
+		if(tilesInSight != null && !tilesInSight.isEmpty()){
+			boolean done = false;
+			int count = 0;
+			while(!done && count < tilesInSight.size()){
+				if(tilesInSight.get(count).containsTree() || tilesInSight.get(count).containsRock()){
+					objTile = tilesInSight.get(count);
+					done = true;
+				}
+				count++;
+			}
+			return objTile;
+		}else{
+			return null;
+		}
+		
+	}
 	
 	public abstract void harvest();
 	

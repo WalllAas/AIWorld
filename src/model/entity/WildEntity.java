@@ -1,5 +1,6 @@
 package model.entity;
 
+import model.entity.ai.WildEntityAI;
 import model.refs.Dir;
 import model.world.Map;
 import model.world.tile.Tile;
@@ -13,7 +14,9 @@ public class WildEntity extends Entity{
 
 	@Override
 	public void startAI() {
-		// TODO Auto-generated method stub
+		this.ai = new WildEntityAI(this);
+		
+		new Thread(this.ai).start();
 		
 	}
 	
@@ -27,12 +30,6 @@ public class WildEntity extends Entity{
 	public void walkTo(Tile obj) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public Tile scanArea() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

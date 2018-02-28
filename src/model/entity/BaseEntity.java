@@ -1,7 +1,5 @@
 package model.entity;
 
-import java.util.List;
-
 import model.entity.ai.BaseEntityAI;
 import model.entity.inventory.Inventory;
 import model.refs.Dir;
@@ -24,9 +22,7 @@ public class BaseEntity extends Entity{
 	@Override
 	public void startAI() {
 		ai = new BaseEntityAI(this);
-		Thread t = new Thread(ai);
-		t.start();
-		
+		new Thread(ai).start();
 	}
 	
 	@Override
@@ -55,35 +51,13 @@ public class BaseEntity extends Entity{
 		}
 	}
 	
-	@Override
-	public Tile scanArea(){
-		System.out.println("Scanning area !");
-		List<Tile> tilesInSight = this.map.getPolygonTilesFromPos(this.pos, lastDirection, this.sight);
-		Tile objTile = null;
-		
-		if(tilesInSight != null && !tilesInSight.isEmpty()){
-			boolean done = false;
-			int count = 0;
-			while(!done && count < tilesInSight.size()){
-				if(tilesInSight.get(count).containsTree() || tilesInSight.get(count).containsRock()){
-					objTile = tilesInSight.get(count);
-					done = true;
-				}
-				count++;
-			}
-			return objTile;
-		}else{
-			return null;
-		}
-		
-	}
 	
 	@Override
 	public void harvest(){
 		//TODO problem while harvesting new item (ex: you have wood in inventory and try to harvest stone)
 		if(this.pos.containsTree() || this.pos.containsRock()) {
 			
-			this.inventory.addItemAmount(this.pos.getStructure().getDrop(), 1);
+//			this.inventory.addItemStack(new ItemStack(this.pos.getStructure().getDrop(), 1));
 			this.pos.breakStructure();
 		}
 		System.out.println(this.inventory);
